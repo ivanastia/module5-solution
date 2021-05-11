@@ -83,7 +83,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
 showLoading("#main-content");
 $ajaxUtils.sendGetRequest(
   allCategoriesUrl,
-  [...], // ***** <---- TODO: STEP 1: Substitute [...] ******
+function (request) {
+    buildAndShowHomeHTML(request); // ***** <---- TODO: STEP 1: Substitute [...] ******
+}, // ***** <---- TODO: STEP 1: Substitute [...] ******
   true); // Explicitly setting the flag to get JSON from server processed into an object literal
 });
 // *** finish **
@@ -97,7 +99,9 @@ function buildAndShowHomeHTML (categories) {
   $ajaxUtils.sendGetRequest(
     homeHtmlUrl,
     function (homeHtml) {
-
+   //$ajaxUtils.sendGetRequest(
+//chooseRandomCategory);
+   var chosenCategoryShortName = chooseRandomCategory (categories).short_name;
       // TODO: STEP 2: Here, call chooseRandomCategory, passing it retrieved 'categories'
       // Pay attention to what type of data that function returns vs what the chosenCategoryShortName
       // variable's name implies it expects.
@@ -116,17 +120,16 @@ function buildAndShowHomeHTML (categories) {
       // it into the home html snippet.
       //
       // var homeHtmlToInsertIntoMainPage = ....
-
+      var homeHtmlToInsertIntoMainPage = insertProperty(homeHtml,"randomCategoryShortName", "'" + chosenCategoryShortName + "'");
 
       // TODO: STEP 4: Insert the the produced HTML in STEP 3 into the main page
       // Use the existing insertHtml function for that purpose. Look through this code for an example
-      // of how to do that.
+      // of how to do that.insertHtml("#main-content", menuItemsViewHtml)
       // ....
-
+insertHtml ("#main-content", homeHtmlToInsertIntoMainPage)
     },
     false); // False here because we are getting just regular HTML from the server, so no need to process JSON.
 }
-
 
 // Given array of category objects, returns a random category object.
 function chooseRandomCategory (categories) {
